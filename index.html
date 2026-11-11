@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>แบบประเมินรายวิชา - ผู้นำการเปลี่ยนแปลงขับเคลื่อนตำบลเข้มแข็ง ตามหลักปรัชญาของเศรษฐกิจพอเพียง ปี 2570</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cdd: {
+                            emerald: '#056839',
+                            dark: '#023c20',
+                            light: '#0a8f50',
+                            gold: '#d4af37',
+                            accent: '#1e3a8a',
+                            surface: '#f4fbf7'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Prompt', 'Sarabun', 'sans-serif'],
+                        sarabun: ['Sarabun', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts: Prompt & Sarabun -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Sarabun:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: 'Prompt', 'Sarabun', sans-serif;
+            background-color: #f1f8f4;
+            color: #1e293b;
+        }
+        .rating-input:checked + .rating-label {
+            background-color: #056839;
+            color: #ffffff;
+            border-color: #056839;
+            transform: scale(1.05);
+            box-shadow: 0 4px 10px rgba(5, 104, 57, 0.28);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #cbd5e1;
+            border-radius: 9999px;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-emerald-200 selection:text-emerald-900">
+
+    <!-- Top Sticky Header & Progress Indicator -->
+    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-emerald-100 shadow-sm">
+        <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cdd-dark to-cdd-emerald flex items-center justify-center text-white shadow-md">
+                    <i data-lucide="award" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h1 class="text-sm md:text-base font-bold text-gray-800 leading-tight">แบบประเมินรายวิชา วันที่ หนึ่ง</h1>
+                    <p class="text-xs text-cdd-emerald font-medium">หลักสูตรสร้างผู้นำการเปลี่ยนแปลงขับเคลื่อนตำบลเข้มแข็ง ตามหลักปรัชญาของเศรษฐกิจพอเพียง ปี 2570</p>
+                </div>
+            </div>
+            <!-- Progress Pill & Quick Actions -->
+            <div class="flex items-center space-x-3">
+                <div class="hidden sm:flex flex-col items-end">
+                    <span class="text-xs font-semibold text-gray-500">ความคืบหน้า</span>
+                    <span id="progress-percent" class="text-xs font-bold text-cdd-emerald">0%</span>
+                </div>
+                <div class="w-24 sm:w-32 bg-gray-200 rounded-full h-2.5 overflow-hidden">
+                    <div id="progress-bar-fill" class="bg-gradient-to-r from-cdd-light to-cdd-emerald h-full w-0 transition-all duration-300"></div>
+                </div>
+                <button type="button" onclick="openWebhookModal()" class="text-xs text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-2.5 py-1.5 rounded-lg flex items-center space-x-1 transition">
+                    <i data-lucide="sheet" class="w-3.5 h-3.5 text-emerald-600"></i>
+                    <span class="hidden md:inline">เชื่อมต่อ Google Sheets</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-4xl mx-auto px-4 py-8 w-full flex-grow">
+
+        <!-- Hero Card -->
+        <div class="bg-gradient-to-br from-cdd-dark via-cdd-emerald to-[#087842] text-white rounded-3xl p-6 md:p-10 shadow-xl shadow-emerald-950/15 relative overflow-hidden mb-8">
+            <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-white/5 rounded-full blur-2xl pointer-events-none"></div>
+            <div class="absolute right-6 top-6 opacity-10 hidden sm:block">
+                <i data-lucide="sprout" class="w-48 h-48 text-white"></i>
+            </div>
+            
+            <div class="relative z-10 max-w-2xl">
+                <div class="inline-flex items-center space-x-2 bg-white/15 backdrop-blur-md px-3 py-1 rounded-full text-xs font-medium text-emerald-100 border border-white/20 mb-4">
+                    <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-cdd-gold"></i>
+                    <span>ระบบประเมินผลการเรียนรู้แบบดิจิทัล (2 วิชา)</span>
+                </div>
+                <h2 class="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight mb-3 leading-snug">
+                    แบบประเมินรายวิชา<br/>
+                    <span class="text-yellow-300 font-semibold text-base sm:text-xl">หลักสูตรสร้างผู้นำการเปลี่ยนแปลงขับเคลื่อนตำบลเข้มแข็ง</span>
+                </h2>
+                <p class="text-emerald-100 text-sm md:text-base font-sarabun leading-relaxed mb-4">
+                    ตามหลักปรัชญาของเศรษฐกิจพอเพียง ประจำปีงบประมาณ พ.ศ. 2570
+                </p>
+                <div class="bg-black/25 backdrop-blur-sm rounded-2xl p-4 border border-white/10 text-xs sm:text-sm text-emerald-50 leading-relaxed font-sarabun">
+                    <strong class="text-yellow-300 font-semibold flex items-center gap-1.5 mb-1">
+                        <i data-lucide="info" class="w-4 h-4"></i> คำชี้แจง:
+                    </strong>
+                    แบบประเมินนี้จัดทำขึ้นเพื่อวัดและประเมินผลการจัดกิจกรรมการเรียนรู้ เพื่อนำข้อมูลไปปรับปรุงและพัฒนาการดำเนินงานต่อไป ขอความกรุณาตอบแบบสอบถามตามความเป็นจริง โดยแบ่งเป็น 3 ตอน
+                </div>
+            </div>
+        </div>
+
+        <!-- Form Element -->
+        <form id="evaluationForm" onsubmit="event.preventDefault(); openReviewModal();" class="space-y-8">
+
+            <!-- ===================== ตอนที่ 1 ===================== -->
+            <section class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-emerald-50 relative">
+                <div class="flex items-center space-x-3 mb-6 pb-3 border-b border-gray-100">
+                    <div class="w-8 h-8 rounded-lg bg-emerald-100 text-cdd-emerald flex items-center justify-center font-bold text-sm">
+                        1
+                    </div>
+                    <div>
+                        <h3 class="text-base sm:text-lg font-bold text-gray-800">ตอนที่ 1 ข้อมูลทั่วไปของผู้ตอบแบบประเมิน</h3>
+                        <p class="text-xs text-gray-500 font-sarabun">(ทำเครื่องหมาย &#10003; ลงในช่องที่ตรงกับท่าน)</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- 1. เพศ -->
+                    <div class="bg-gray-50/60 p-4 rounded-xl border border-gray-100">
+                        <label class="block text-sm font-semibold text-gray-700 mb-3">
+                            1. เพศ <span class="text-rose-500">*</span>
+                        </label>
+                        <div class="flex items-center space-x-6">
+                            <label class="flex items-center space-x-2.5 cursor-pointer">
+                                <input type="radio" name="gender" value="ชาย" required class="w-4 h-4 text-cdd-emerald focus:ring-cdd-emerald border-gray-300">
+                                <span class="text-sm text-gray-700">ชาย</span>
+                            </label>
+                            <label class="flex items-center space-x-2.5 cursor-pointer">
+                                <input type="radio" name="gender" value="หญิง" required class="w-4 h-4 text-cdd-emerald focus:ring-cdd-emerald border-gray-300">
+                                <span class="text-sm text-gray-700">หญิง</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- 2. อายุ -->
+                    <div class="bg-gray-50/60 p-4 rounded-xl border border-gray-100">
+                        <label class="block text-sm font-semibold text-gray-700 mb-3">
+                            2. อายุ <span class="text-rose-500">*</span>
+                        </label>
+                        <div class="grid grid-cols-2 gap-2.5">
+                            <label class="flex items-center space-x-2 text-xs sm:text-sm text-gray-700 cursor-pointer">
+                                <input type="radio" name="age" value="ต่ำกว่า 30 ปี" required class="w-4 h-4 text-cdd-emerald focus:ring-cdd-emerald border-gray-300">
+                                <span>ต่ำกว่า 30 ปี</span>
+                            </label>
+                            <label class="flex items-center space-x-2 text-xs sm:text-sm text-gray-700 cursor-pointer">
+                                <input type="radio" name="age" value="30-40 ปี" class="w-4 h-4 text-cdd-emerald focus:ring-cdd-emerald border-gray-300">
+                                <span>30 - 40 ปี</span>
+                            </label>
+                            <label class="flex items-center space-x-2 text-xs sm:text-sm text-gray-700 cursor-pointer">
+                                <input type="radio" name="age" value="41-50 ปี" class="w-4 h-4 text-cdd-emerald focus:ring-cdd-emerald border-gray-300">
+                                <span>41 - 50 ปี</span>
+                            </label>
+                            <label class="flex items-center space-x-2 text-xs sm:text-sm text-gray-700 cursor-pointer">
+                                <input type="radio" name="age" value="50 ปีขึ้นไป" class="w-4 h-4 text-cdd-emerald focus:ring-cdd-emerald border-gray-300">
+                                <span>50 ปีขึ้นไป</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- 3. วุฒิการศึกษา -->
+                    <div class="bg-gray-50/60 p-4 rounded-xl border border-gray-100 md:col-span-2">
+                        <label class="block text-sm font-semibold text-gray-700 mb-3">
+                            3. วุฒิการศึกษา <span class="text-rose-500">*</span>
+                        </label>
+                        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+                            <label class="flex items-center space-x-2 text-xs sm:text-sm text-gray-700 cursor-pointer">
+                                <input type="radio" name="education" value="ประถมศึกษา" required class="w-4 h-4 text-cdd-emerald focus:ring-cdd-emerald border-gray-300">
+                                <span>ประถมศึกษา</span>
+                            </label>
+                            <label class="flex items-center space-x-2 text-xs sm:text-sm text-gray-700 cursor-pointer">
+                                <input type="radio" name="education" value="ม.3" class="w-4 h-4 text-cdd-emerald focus:ring-cdd-emerald border-gray-300">
+                                <span>ม.3</span>
+                            </label>
+                            <label class="flex items-center space-x-2 text-xs sm:text-sm text-gray-700 cursor-pointer">
+                                <input type="radio" name="education" value="ม.6" class="w-4 h-4 text-cdd-emerald focus:ring-cdd-emerald border-gray-300">
+                                <span>ม.6</span>
+                            </label>
+                            <label class="flex items-center space-x-2 text-xs sm:text-sm text-gray-700 cursor-pointer">
+                                <input type="radio" name="education" value="ปวช./ปวส./อนุปริญญา" class="w-4 h-4 text-cdd-emerald focus:ring-cdd-emerald border-gray-300">
+                                <span>ปวช./ปวส./อนุปริญญา</span>
+                            </label>
+                            <label class="flex items-center space-x-2 text-xs sm:text-sm text-gray-700 cursor-pointer">
+                                <input type="radio" name="education" value="ปริญญาตรี" class="w-4 h-4 text-cdd-emerald focus:ring-cdd-emerald border-gray-300">
+                                <span>ปริญญาตรี</span>
+                            </label>
+                            <label class="flex items-center space-x-2 text-xs sm:text-sm text-gray-700 cursor-pointer">
+                                <input type="radio" name="education" value="ปริญญาโท" class="w-4 h-4 text-cdd-emerald focus:ring-cdd-emerald border-gray-300">
+                                <span>ปริญญาโท</span>
+                            </label>
+                            <label class="flex items-center space-x-2 text-xs sm:text-sm text-gray-700 cursor-pointer col-span-2 sm:col-span-1">
+                                <input type="radio" name="education" value="อื่นๆ" id="edu_other_radio" class="w-4 h-4 text-cdd-emerald focus:ring-cdd-emerald border-gray-300">
+                                <span>อื่นๆ (ระบุ)</span>
+                            </label>
+                        </div>
+                        <div id="edu_other_container" class="mt-2.5 hidden">
+                            <input type="text" id="edu_other_input" placeholder="กรุณาระบุวุฒิการศึกษา..." class="w-full text-xs sm:text-sm border border-gray-300 rounded-lg px-3 py-2 focus:ring-1 focus:ring-cdd-emerald focus:border-cdd-emerald outline-none">
+                        </div>
+                    </div>
+
+                    <!-- 4. สถานะทางสังคม -->
+                    <div class="bg-gray-50/60 p-4 rounded-xl border border-gray-100 md:col-span-2">
+                        <label class="block text-sm font-semibold text-gray-700 mb-3">
+                            4. สถานะทางสังคม <span class="text-rose-500">*</span>
+                        </label>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <label class="flex items-center space-x-2 text-xs sm:text-sm text-gray-700 cursor-pointer p-2.5 rounded-lg hover:bg-emerald-50/50 border border-transparent hover:border-emerald-100 transition">
+                                <input type="radio" name="role" value="กำนัน ผู้ใหญ่บ้าน" required class="w-4 h-4 text-cdd-emerald focus:ring-cdd-emerald border-gray-300">
+                                <span>กำนัน ผู้ใหญ่บ้าน	</span>
+                            </label>
+                            <label class="flex items-center space-x-2 text-xs sm:text-sm text-gray-700 cursor-pointer p-2.5 rounded-lg hover:bg-emerald-50/50 border border-transparent hover:border-emerald-100 transition">
+                                <input type="radio" name="role" value="ผู้นำชุมชน/ท้องถิ่น (อปท.)" class="w-4 h-4 text-cdd-emerald focus:ring-cdd-emerald border-gray-300">
+                                <span>ผู้นำชุมชน/ท้องถิ่น (อปท.)</span>
+                            </label>
+                            <label class="flex items-center space-x-2 text-xs sm:text-sm text-gray-700 cursor-pointer p-2.5 rounded-lg hover:bg-emerald-50/50 border border-transparent hover:border-emerald-100 transition">
+                                <input type="radio" name="role" value="ผู้แทน ศอช.ต." class="w-4 h-4 text-cdd-emerald focus:ring-cdd-emerald border-gray-300">
+                                <span>ผู้แทน ศอช.ต.</span>
+                            </label>
+                            <label class="flex items-center space-x-2 text-xs sm:text-sm text-gray-700 cursor-pointer p-2.5 rounded-lg hover:bg-emerald-50/50 border border-transparent hover:border-emerald-100 transition">
+                                <input type="radio" name="role" value="เจ้าหน้าที่ของกรมการพัฒนาชุมชน" class="w-4 h-4 text-cdd-emerald focus:ring-cdd-emerald border-gray-300">
+                                <span>เจ้าหน้าที่ของกรมการพัฒนาชุมชน</span>
+                            </label>
+                            <label class="flex items-center space-x-2 text-xs sm:text-sm text-gray-700 cursor-pointer col-span-1 sm:col-span-2 p-2.5 rounded-lg hover:bg-emerald-50/50 border border-transparent hover:border-emerald-100 transition">
+                                <input type="radio" name="role" value="อื่นๆ" id="role_other_radio" class="w-4 h-4 text-cdd-emerald focus:ring-cdd-emerald border-gray-300">
+                                <span>อื่นๆ (ระบุ)</span>
+                            </label>
+                        </div>
+                        <div id="role_other_container" class="mt-2.5 hidden">
+                            <input type="text" id="role_other_input" placeholder="ระบุสถานะทางสังคม..." class="w-full text-xs sm:text-sm border border-gray-300 rounded-lg px-3 py-2 focus:ring-1 focus:ring-cdd-emerald focus:border-cdd-emerald outline-none">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===================== ตอนที่ 2 (2 วิชา) ===================== -->
+            <section class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-emerald-50">
+                <div class="flex flex-col md:flex-row md:items-center justify-between pb-4 border-b border-gray-100 gap-3">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 rounded-lg bg-emerald-100 text-cdd-emerald flex items-center justify-center font-bold text-sm">
+                            2
+                        </div>
+                        <div>
+                            <h3 class="text-base sm:text-lg font-bold text-gray-800">ตอนที่ 2 ความพึงพอใจต่อการจัดกิจกรรมการเรียนรู้ (2 วิชา)</h3>
+                            <p class="text-xs text-gray-500 font-sarabun">เกณฑ์ประเมิน: 5 = มากที่สุด, 4 = มาก, 3 = ปานกลาง, 2 = น้อย, 1 = น้อยที่สุด</p>
+                        </div>
+                    </div>
+                    <!-- Live Score Badge -->
+                    <div class="inline-flex items-center bg-emerald-50 px-3.5 py-1.5 rounded-xl border border-emerald-200">
+                        <span class="text-xs text-emerald-800 font-medium mr-2">คะแนนเฉลี่ยรวม 2 วิชา:</span>
+                        <span id="live-avg-score" class="text-base font-bold text-cdd-emerald">0.00</span>
+                        <span class="text-xs text-emerald-600 ml-1">/ 5.00</span>
+                    </div>
+                </div>
+
+                <!-- Rating Criteria Legend bar -->
+                <div class="mt-4 bg-emerald-50/60 rounded-xl p-3 flex flex-wrap justify-between items-center text-xs text-emerald-900 border border-emerald-100 gap-2">
+                    <span class="font-semibold flex items-center gap-1"><i data-lucide="help-circle" class="w-3.5 h-3.5"></i> สเกลระดับคะแนน:</span>
+                    <span class="flex items-center gap-1"><span class="w-5 h-5 rounded bg-emerald-800 text-white flex items-center justify-center font-bold text-[10px]">5</span> มากที่สุด</span>
+                    <span class="flex items-center gap-1"><span class="w-5 h-5 rounded bg-emerald-700 text-white flex items-center justify-center font-bold text-[10px]">4</span> มาก</span>
+                    <span class="flex items-center gap-1"><span class="w-5 h-5 rounded bg-emerald-600 text-white flex items-center justify-center font-bold text-[10px]">3</span> ปานกลาง</span>
+                    <span class="flex items-center gap-1"><span class="w-5 h-5 rounded bg-emerald-500 text-white flex items-center justify-center font-bold text-[10px]">2</span> น้อย</span>
+                    <span class="flex items-center gap-1"><span class="w-5 h-5 rounded bg-emerald-400 text-white flex items-center justify-center font-bold text-[10px]">1</span> น้อยที่สุด</span>
+                </div>
+
+                <!-- ---------------- วิชาที่ 1 ---------------- -->
+                <div class="mt-8 space-y-4">
+                    <div class="bg-gradient-to-r from-emerald-800 to-emerald-900 text-white px-4 py-3 rounded-xl flex items-center justify-between shadow-sm">
+                        <span class="font-semibold text-xs sm:text-sm flex items-center gap-2">
+                            <i data-lucide="book-open" class="w-4 h-4 text-yellow-300"></i>
+                            วิชาที่ 1: วิชา ผลสำเร็จของผู้นำการเปลี่ยนแปลงและกรอบแนวทางโครงการเสริมสร้างและพัฒนาผู้นำการเปลี่ยนแปลง ปี 2570
+                        </span>
+                        <span id="subject1-avg" class="text-xs font-semibold bg-white/20 px-2 py-0.5 rounded-md">เฉลี่ย 0.00</span>
+                    </div>
+                    
+                    <div class="space-y-3" id="group-subject-1">
+                        <!-- 1.1 -->
+                        <div class="question-row p-3 sm:p-4 rounded-xl border border-gray-100 hover:border-emerald-200 hover:bg-emerald-50/20 transition flex flex-col md:flex-row md:items-center justify-between gap-3">
+                            <div class="text-xs sm:text-sm text-gray-700 flex-1">
+                                <span class="font-semibold text-cdd-emerald">1.</span> เนื้อหาช่วยให้เข้าใจบทบาทและภารกิจของผู้เกี่ยวข้องในการขับเคลื่อนโครงการในระดับพื้นที่
+                            </div>
+                            <div class="flex items-center justify-between md:justify-end gap-1.5 sm:gap-2" data-question="s1_1"></div>
+                        </div>
+                        <!-- 1.2 -->
+                        <div class="question-row p-3 sm:p-4 rounded-xl border border-gray-100 hover:border-emerald-200 hover:bg-emerald-50/20 transition flex flex-col md:flex-row md:items-center justify-between gap-3">
+                            <div class="text-xs sm:text-sm text-gray-700 flex-1">
+                                <span class="font-semibold text-cdd-emerald">2.</span> ระยะเวลาการบรรยาย (2 ชั่วโมง) เหมาะสมกับขอบเขตเนื้อหา
+                            </div>
+                            <div class="flex items-center justify-between md:justify-end gap-1.5 sm:gap-2" data-question="s1_2"></div>
+                        </div>
+                        <!-- 1.3 -->
+                        <div class="question-row p-3 sm:p-4 rounded-xl border border-gray-100 hover:border-emerald-200 hover:bg-emerald-50/20 transition flex flex-col md:flex-row md:items-center justify-between gap-3">
+                            <div class="text-xs sm:text-sm text-gray-700 flex-1">
+                                <span class="font-semibold text-cdd-emerald">3.</span> วิทยากรมีความรู้ความเชี่ยวชาญด้านการขับเคลื่อนงานพัฒนาชุมชน
+                            </div>
+                            <div class="flex items-center justify-between md:justify-end gap-1.5 sm:gap-2" data-question="s1_3"></div>
+                        </div>
+                        <!-- 1.4 -->
+                        <div class="question-row p-3 sm:p-4 rounded-xl border border-gray-100 hover:border-emerald-200 hover:bg-emerald-50/20 transition flex flex-col md:flex-row md:items-center justify-between gap-3">
+                            <div class="text-xs sm:text-sm text-gray-700 flex-1">
+                                <span class="font-semibold text-cdd-emerald">4.</span> สื่อประกอบการบรรยายมีความชัดเจนและช่วยให้เข้าใจง่ายขึ้น
+                            </div>
+                            <div class="flex items-center justify-between md:justify-end gap-1.5 sm:gap-2" data-question="s1_4"></div>
+                        </div>
+                        <!-- 1.5 -->
+                        <div class="question-row p-3 sm:p-4 rounded-xl border border-gray-100 hover:border-emerald-200 hover:bg-emerald-50/20 transition flex flex-col md:flex-row md:items-center justify-between gap-3">
+                            <div class="text-xs sm:text-sm text-gray-700 flex-1">
+                                <span class="font-semibold text-cdd-emerald">5.</span> ผู้เข้าอบรมได้รับความรู้ และทักษะเพิ่มเติมจากวิชานี้
+                            </div>
+                            <div class="flex items-center justify-between md:justify-end gap-1.5 sm:gap-2" data-question="s1_5"></div>
+                        </div>
+                        <!-- 1.6 -->
+                        <div class="question-row p-3 sm:p-4 rounded-xl border border-gray-100 hover:border-emerald-200 hover:bg-emerald-50/20 transition flex flex-col md:flex-row md:items-center justify-between gap-3">
+                            <div class="text-xs sm:text-sm text-gray-700 flex-1">
+                                <span class="font-semibold text-cdd-emerald">6.</span> ผู้เข้าอบรมสามารถนำแนวคิดไปประยุกต์ใช้ในการทำงานจริงในพื้นที่ได้
+                            </div>
+                            <div class="flex items-center justify-between md:justify-end gap-1.5 sm:gap-2" data-question="s1_6"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ---------------- วิชาที่ 2 ---------------- -->
+                <div class="mt-8 space-y-4">
+                    <div class="bg-gradient-to-r from-emerald-800 to-emerald-900 text-white px-4 py-3 rounded-xl flex items-center justify-between shadow-sm">
+                        <span class="font-semibold text-xs sm:text-sm flex items-center gap-2">
+                            <i data-lucide="compass" class="w-4 h-4 text-yellow-300"></i>
+                            วิชาที่ 2: ผู้นำการเปลี่ยนแปลงกับบริบทและสถานการณ์ความเปลี่ยนแปลงในอนาคต
+                        </span>
+                        <span id="subject2-avg" class="text-xs font-semibold bg-white/20 px-2 py-0.5 rounded-md">เฉลี่ย 0.00</span>
+                    </div>
+
+                    <div class="space-y-3" id="group-subject-2">
+                        <!-- 2.1 -->
+                        <div class="question-row p-3 sm:p-4 rounded-xl border border-gray-100 hover:border-emerald-200 hover:bg-emerald-50/20 transition flex flex-col md:flex-row md:items-center justify-between gap-3">
+                            <div class="text-xs sm:text-sm text-gray-700 flex-1">
+                                <span class="font-semibold text-cdd-emerald">1.</span> เนื้อหาครอบคลุมสถานการณ์สังคม แนวโน้มการเปลี่ยนแปลง และผลกระทบต่อคน ครัวเรือน และชุมชน
+                            </div>
+                            <div class="flex items-center justify-between md:justify-end gap-1.5 sm:gap-2" data-question="s2_1"></div>
+                        </div>
+                        <!-- 2.2 -->
+                        <div class="question-row p-3 sm:p-4 rounded-xl border border-gray-100 hover:border-emerald-200 hover:bg-emerald-50/20 transition flex flex-col md:flex-row md:items-center justify-between gap-3">
+                            <div class="text-xs sm:text-sm text-gray-700 flex-1">
+                                <span class="font-semibold text-cdd-emerald">2.</span> ระยะเวลาการบรรยาย (2 ชั่วโมง) เหมาะสมกับขอบเขตเนื้อหา
+                            </div>
+                            <div class="flex items-center justify-between md:justify-end gap-1.5 sm:gap-2" data-question="s2_2"></div>
+                        </div>
+                        <!-- 2.3 -->
+                        <div class="question-row p-3 sm:p-4 rounded-xl border border-gray-100 hover:border-emerald-200 hover:bg-emerald-50/20 transition flex flex-col md:flex-row md:items-center justify-between gap-3">
+                            <div class="text-xs sm:text-sm text-gray-700 flex-1">
+                                <span class="font-semibold text-cdd-emerald">3.</span> การแบ่งกลุ่มฝึกปฏิบัติ (1 ชั่วโมง) ช่วยให้ผู้เข้าอบรมวิเคราะห์สถานการณ์ปัญหาในพื้นที่ได้ดีขึ้น
+                            </div>
+                            <div class="flex items-center justify-between md:justify-end gap-1.5 sm:gap-2" data-question="s2_3"></div>
+                        </div>
+                        <!-- 2.4 -->
+                        <div class="question-row p-3 sm:p-4 rounded-xl border border-gray-100 hover:border-emerald-200 hover:bg-emerald-50/20 transition flex flex-col md:flex-row md:items-center justify-between gap-3">
+                            <div class="text-xs sm:text-sm text-gray-700 flex-1">
+                                <span class="font-semibold text-cdd-emerald">4.</span> วิทยากรมีความเชี่ยวชาญด้านสถานการณ์สังคม การวิเคราะห์การเปลี่ยนแปลงของโลกในอนาคต
+                            </div>
+                            <div class="flex items-center justify-between md:justify-end gap-1.5 sm:gap-2" data-question="s2_4"></div>
+                        </div>
+                        <!-- 2.5 -->
+                        <div class="question-row p-3 sm:p-4 rounded-xl border border-gray-100 hover:border-emerald-200 hover:bg-emerald-50/20 transition flex flex-col md:flex-row md:items-center justify-between gap-3">
+                            <div class="text-xs sm:text-sm text-gray-700 flex-1">
+                                <span class="font-semibold text-cdd-emerald">5.</span> ผู้เข้าอบรมสามารถวิเคราะห์สถานการณ์สังคมและผลกระทบต่อชุมชนและเสนอแนวทางการขับเคลื่อนงานที่เหมาะสม
+                            </div>
+                            <div class="flex items-center justify-between md:justify-end gap-1.5 sm:gap-2" data-question="s2_5"></div>
+                        </div>
+                        <!-- 2.6 -->
+                        <div class="question-row p-3 sm:p-4 rounded-xl border border-gray-100 hover:border-emerald-200 hover:bg-emerald-50/20 transition flex flex-col md:flex-row md:items-center justify-between gap-3">
+                            <div class="text-xs sm:text-sm text-gray-700 flex-1">
+                                <span class="font-semibold text-cdd-emerald">6.</span> สื่อประกอบการบรรยายมีความชัดเจนและช่วยให้เข้าใจง่ายขึ้น
+                            </div>
+                            <div class="flex items-center justify-between md:justify-end gap-1.5 sm:gap-2" data-question="s2_6"></div>
+                        </div>
+                        <!-- 2.7 -->
+                        <div class="question-row p-3 sm:p-4 rounded-xl border border-gray-100 hover:border-emerald-200 hover:bg-emerald-50/20 transition flex flex-col md:flex-row md:items-center justify-between gap-3">
+                            <div class="text-xs sm:text-sm text-gray-700 flex-1">
+                                <span class="font-semibold text-cdd-emerald">7.</span> ผู้เข้าอบรมได้รับความรู้ และทักษะเพิ่มเติมจากวิชานี้
+                            </div>
+                            <div class="flex items-center justify-between md:justify-end gap-1.5 sm:gap-2" data-question="s2_7"></div>
+                        </div>
+                        <!-- 2.8 -->
+                        <div class="question-row p-3 sm:p-4 rounded-xl border border-gray-100 hover:border-emerald-200 hover:bg-emerald-50/20 transition flex flex-col md:flex-row md:items-center justify-between gap-3">
+                            <div class="text-xs sm:text-sm text-gray-700 flex-1">
+                                <span class="font-semibold text-cdd-emerald">8.</span> ผู้เข้าอบรมสามารถนำแนวคิดไปประยุกต์ใช้ในการทำงานจริงในพื้นที่ได้
+                            </div>
+                            <div class="flex items-center justify-between md:justify-end gap-1.5 sm:gap-2" data-question="s2_8"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===================== ตอนที่ 3 ===================== -->
+            <section class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-emerald-50">
+                <div class="flex items-center space-x-3 mb-6 pb-3 border-b border-gray-100">
+                    <div class="w-8 h-8 rounded-lg bg-emerald-100 text-cdd-emerald flex items-center justify-center font-bold text-sm">
+                        3
+                    </div>
+                    <div>
+                        <h3 class="text-base sm:text-lg font-bold text-gray-800">ตอนที่ 3 ข้อคิดเห็นและข้อเสนอแนะเพิ่มเติม</h3>
+                        <p class="text-xs text-gray-500 font-sarabun">ความคิดเห็นของท่านมีคุณค่าอย่างยิ่งในการพัฒนาหลักสูตรและการดำเนินงานในระยะต่อไป</p>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <div>
+                        <label for="suggestion_strengths" class="block text-xs sm:text-sm font-semibold text-gray-700 mb-1.5 flex items-center gap-1.5">
+                            <i data-lucide="thumbs-up" class="w-3.5 h-3.5 text-cdd-emerald"></i>
+                            1. สิ่งที่ท่านประทับใจหรือจุดเด่นของการจัดกิจกรรมในวันนี้:
+                        </label>
+                        <textarea id="suggestion_strengths" name="suggestion_strengths" rows="3" placeholder="ระบุสิ่งที่ท่านประทับใจ เช่น เนื้อหาสาระ วิทยากร กระบวนการเรียนรู้ การแลกเปลี่ยน..." class="w-full text-xs sm:text-sm border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-cdd-emerald focus:border-cdd-emerald outline-none transition"></textarea>
+                    </div>
+
+                    <div>
+                        <label for="suggestion_improvements" class="block text-xs sm:text-sm font-semibold text-gray-700 mb-1.5 flex items-center gap-1.5">
+                            <i data-lucide="wrench" class="w-3.5 h-3.5 text-amber-600"></i>
+                            2. สิ่งที่ควรปรับปรุงหรือพัฒนาเพิ่มเติม:
+                        </label>
+                        <textarea id="suggestion_improvements" name="suggestion_improvements" rows="3" placeholder="ระบุสิ่งที่ควรปรับปรุงหรือพัฒนา เช่น สื่อ เอกสาร การจัดสรรเวลา..." class="w-full text-xs sm:text-sm border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-cdd-emerald focus:border-cdd-emerald outline-none transition"></textarea>
+                    </div>
+
+                    <div>
+                        <label for="suggestion_nextdays" class="block text-xs sm:text-sm font-semibold text-gray-700 mb-1.5 flex items-center gap-1.5">
+                            <i data-lucide="message-square-plus" class="w-3.5 h-3.5 text-cdd-emerald"></i>
+                            3. ข้อเสนอแนะอื่นๆ สำหรับการจัดกิจกรรมในวันถัดไป:
+                        </label>
+                        <textarea id="suggestion_nextdays" name="suggestion_nextdays" rows="2" placeholder="ข้อเสนอแนะสำหรับการจัดกิจกรรมในวันถัดไป..." class="w-full text-xs sm:text-sm border border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-cdd-emerald focus:border-cdd-emerald outline-none transition"></textarea>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Bottom Action Buttons -->
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4">
+                <button type="button" onclick="fillMockData()" class="w-full sm:w-auto text-xs text-gray-500 hover:text-cdd-emerald py-2 px-4 rounded-xl border border-dashed border-gray-300 hover:border-cdd-emerald transition flex items-center justify-center gap-1.5">
+                    <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+                    <span>ทดลองกรอกข้อมูลอัตโนมัติ (Mock Data)</span>
+                </button>
+
+                <div class="flex items-center space-x-3 w-full sm:w-auto justify-end">
+                    <button type="reset" onclick="setTimeout(updateProgress, 100)" class="w-1/2 sm:w-auto px-5 py-3 rounded-xl border border-gray-200 text-gray-600 font-medium text-xs sm:text-sm hover:bg-gray-100 transition">
+                        ล้างข้อมูล
+                    </button>
+                    <button type="submit" class="w-1/2 sm:w-auto bg-gradient-to-r from-cdd-dark via-cdd-emerald to-[#0a7a45] text-white px-8 py-3 rounded-xl font-bold text-xs sm:text-sm shadow-lg shadow-emerald-900/20 hover:opacity-95 transform active:scale-95 transition flex items-center justify-center space-x-2">
+                        <i data-lucide="search-check" class="w-4 h-4 text-yellow-300"></i>
+                        <span>ตรวจสอบข้อมูล (Review)</span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 py-6 text-center text-xs text-gray-500">
+        <div class="max-w-4xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
+            <div>
+                โครงการสัมมนาเชิงปฏิบัติการสร้างผู้นำการเปลี่ยนแปลงขับเคลื่อนตำบลเข้มแข็ง ปี 2570
+            </div>
+            <div class="text-gray-400 font-sarabun text-[11px]">
+                กรมการพัฒนาชุมชน กระทรวงมหาดไทย
+            </div>
+        </div>
+    </footer>
+
+    <!-- ========================================================================= -->
+    <!-- MODAL 1: REVIEW & CONFIRM MODAL -->
+    <!-- ========================================================================= -->
+    <div id="reviewModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden border border-emerald-100 transform transition-all animate-in fade-in zoom-in duration-200">
+            <!-- Modal Header -->
+            <div class="bg-gradient-to-r from-cdd-dark to-cdd-emerald text-white p-5 flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center">
+                        <i data-lucide="file-check-2" class="w-5 h-5 text-yellow-300"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-base">ตรวจสอบข้อมูลการประเมิน (Review)</h4>
+                        <p class="text-xs text-emerald-100">โปรดตรวจสอบความถูกต้องของข้อมูลก่อนยืนยันบันทึกผล</p>
+                    </div>
+                </div>
+                <button type="button" onclick="closeReviewModal()" class="text-white/80 hover:text-white p-1 rounded-lg">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <!-- Modal Content (Scrollable) -->
+            <div class="p-6 overflow-y-auto space-y-5 custom-scrollbar text-xs sm:text-sm text-gray-700">
+                <!-- Profile summary -->
+                <div class="bg-emerald-50/50 rounded-2xl p-4 border border-emerald-100">
+                    <h5 class="font-bold text-cdd-emerald mb-2.5 flex items-center gap-1.5 text-xs sm:text-sm">
+                        <i data-lucide="user" class="w-4 h-4"></i> ตอนที่ 1: ข้อมูลทั่วไปของผู้ตอบแบบประเมิน
+                    </h5>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs" id="review-profile-summary"></div>
+                </div>
+
+                <!-- Scores summary -->
+                <div class="bg-gray-50 rounded-2xl p-4 border border-gray-100">
+                    <div class="flex items-center justify-between mb-3">
+                        <h5 class="font-bold text-gray-800 flex items-center gap-1.5 text-xs sm:text-sm">
+                            <i data-lucide="bar-chart-3" class="w-4 h-4 text-cdd-emerald"></i> ตอนที่ 2: สรุปผลคะแนนเฉลี่ย (2 วิชา)
+                        </h5>
+                        <span id="review-total-avg" class="text-xs font-bold text-cdd-emerald bg-emerald-100 px-2 py-0.5 rounded-lg"></span>
+                    </div>
+                    <div class="space-y-2 text-xs">
+                        <div class="flex justify-between items-center bg-white p-2.5 rounded-xl border border-gray-100">
+                            <span class="font-medium">วิชาที่ 1: การเสริมสร้างอุดมการณ์และการน้อมนำหลักปรัชญาของเศรษฐกิจพอเพียงสู่การปฏิบัติ (6 ข้อ)</span>
+                            <span id="review-score-s1" class="font-bold text-cdd-emerald ml-2">0.00 / 5.00</span>
+                        </div>
+                        <div class="flex justify-between items-center bg-white p-2.5 rounded-xl border border-gray-100">
+                            <span class="font-medium">วิชาที่ 2: บทบาทผู้นำการเปลี่ยนแปลงกับการพัฒนาชุมชนและการจัดทำแผนพัฒนาตำบล (8 ข้อ)</span>
+                            <span id="review-score-s2" class="font-bold text-cdd-emerald ml-2">0.00 / 5.00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Suggestions summary -->
+                <div class="bg-white rounded-2xl p-4 border border-gray-200 space-y-2 text-xs">
+                    <h5 class="font-bold text-gray-800 flex items-center gap-1.5">
+                        <i data-lucide="message-square" class="w-4 h-4 text-cdd-emerald"></i> ตอนที่ 3: ข้อคิดเห็นและข้อเสนอแนะเพิ่มเติม
+                    </h5>
+                    <div>
+                        <span class="font-semibold text-gray-600 block">1. สิ่งที่ประทับใจหรือจุดเด่น:</span>
+                        <p id="review-sug-strengths" class="text-gray-700 italic pl-2 border-l-2 border-emerald-400 mt-0.5">-</p>
+                    </div>
+                    <div>
+                        <span class="font-semibold text-gray-600 block">2. สิ่งที่ควรปรับปรุงหรือพัฒนาเพิ่มเติม:</span>
+                        <p id="review-sug-improvements" class="text-gray-700 italic pl-2 border-l-2 border-amber-400 mt-0.5">-</p>
+                    </div>
+                    <div>
+                        <span class="font-semibold text-gray-600 block">3. ข้อเสนอแนะสำหรับการจัดกิจกรรมวันถัดไป:</span>
+                        <p id="review-sug-nextdays" class="text-gray-700 italic pl-2 border-l-2 border-blue-400 mt-0.5">-</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="bg-gray-50 border-t border-gray-100 p-4 flex flex-col sm:flex-row items-center justify-end gap-2.5">
+                <button type="button" onclick="closeReviewModal()" class="w-full sm:w-auto px-4 py-2.5 rounded-xl text-gray-600 hover:bg-gray-200 text-xs font-medium transition">
+                    กลับไปแก้ไข
+                </button>
+                <button type="button" onclick="submitEvaluation()" class="w-full sm:w-auto bg-cdd-emerald hover:bg-cdd-dark text-white px-6 py-2.5 rounded-xl text-xs sm:text-sm font-bold shadow-md shadow-emerald-900/10 transition flex items-center justify-center space-x-2">
+                    <i data-lucide="send" class="w-4 h-4"></i>
+                    <span>ยืนยันส่งผลการประเมิน</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- MODAL 2: SUCCESS & EXPORT MODAL -->
+    <!-- ========================================================================= -->
+    <div id="successModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white rounded-3xl max-w-xl w-full p-6 sm:p-8 text-center shadow-2xl border border-emerald-100">
+            <div class="w-16 h-16 rounded-full bg-emerald-100 text-cdd-emerald mx-auto flex items-center justify-center mb-4">
+                <i data-lucide="check" class="w-8 h-8 stroke-[3]"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-800 mb-1">บันทึกผลการประเมินสำเร็จ!</h3>
+            <p class="text-xs sm:text-sm text-gray-500 font-sarabun mb-6">
+                ขอขอบพระคุณทุกท่านที่ร่วมให้ข้อมูลเพื่อขับเคลื่อนตำบลเข้มแข็งตามหลักปรัชญาของเศรษฐกิจพอเพียง ปี 2570
+            </p>
+
+            <div class="bg-gray-50 border border-gray-100 rounded-2xl p-4 text-left mb-6">
+                <h6 class="text-xs font-bold text-gray-700 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                    <i data-lucide="download" class="w-4 h-4 text-cdd-emerald"></i> การนำข้อมูลไปต่อยอดในชีต:
+                </h6>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                    <button type="button" onclick="exportToCSV()" class="flex items-center justify-center gap-2 bg-white hover:bg-emerald-50 border border-emerald-300 text-cdd-emerald font-semibold py-2.5 px-3 rounded-xl text-xs transition shadow-sm">
+                        <i data-lucide="file-spreadsheet" class="w-4 h-4 text-emerald-600"></i>
+                        <span>ดาวน์โหลด CSV (รองรับ Excel/Sheets)</span>
+                    </button>
+                    <button type="button" onclick="copyDataJSON()" class="flex items-center justify-center gap-2 bg-white hover:bg-emerald-50 border border-emerald-300 text-cdd-emerald font-semibold py-2.5 px-3 rounded-xl text-xs transition shadow-sm">
+                        <i data-lucide="copy" class="w-4 h-4 text-emerald-600"></i>
+                        <span>คัดลอกข้อมูล JSON</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-center gap-3">
+                <button type="button" onclick="closeSuccessModal()" class="w-full bg-cdd-emerald hover:bg-cdd-dark text-white py-2.5 rounded-xl font-semibold text-xs sm:text-sm transition">
+                    เสร็จสิ้นและเริ่มประเมินใหม่
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- MODAL 3: GOOGLE SHEETS / APPS SCRIPT WEBHOOK GUIDE -->
+    <!-- ========================================================================= -->
+    <div id="webhookModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden border border-emerald-100">
+            <div class="bg-gradient-to-r from-emerald-800 to-emerald-950 text-white p-5 flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center text-yellow-300">
+                        <i data-lucide="sheet" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-base">เชื่อมต่อ Google Sheets ผ่าน Google Apps Script</h4>
+                        <p class="text-xs text-emerald-200">รับข้อมูลผลการประเมิน 2 วิชาเข้าชีตแบบอัตโนมัติทันที</p>
+                    </div>
+                </div>
+                <button type="button" onclick="closeWebhookModal()" class="text-white/80 hover:text-white p-1 rounded-lg">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <div class="p-6 overflow-y-auto space-y-4 custom-scrollbar text-xs sm:text-sm text-gray-700">
+                <div class="space-y-2">
+                    <h5 class="font-bold text-cdd-emerald">1. ตั้งค่า Webhook URL:</h5>
+                    <div class="flex items-center gap-2">
+                        <input type="text" id="webhook_url_input" placeholder="วาง Web App URL ของ Google Apps Script..." class="flex-1 text-xs border border-gray-300 rounded-xl px-3 py-2.5 outline-none focus:border-cdd-emerald focus:ring-1 focus:ring-cdd-emerald font-mono">
+                        <button type="button" onclick="saveWebhookUrl()" class="bg-cdd-emerald hover:bg-cdd-dark text-white px-4 py-2.5 rounded-xl font-semibold text-xs transition">บันทึก URL</button>
+                    </div>
+                    <p class="text-[11px] text-gray-400">เมื่อบันทึกแล้ว ระบบจะส่งข้อมูลตรงเข้า Google Sheet ทุกครั้งที่กดยืนยัน</p>
+                </div>
+
+                <div class="space-y-2 pt-2 border-t border-gray-100">
+                    <h5 class="font-bold text-gray-800">2. โค้ด Google Apps Script (ฉบับ 2 วิชาหลัก):</h5>
+                    <div class="relative">
+                        <pre class="bg-slate-900 text-slate-100 p-3.5 rounded-xl text-[11px] font-mono overflow-x-auto custom-scrollbar max-h-48" id="gas-code-block">
+function doPost(e) {
+  try {
+    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    var data = JSON.parse(e.postData.contents);
+    
+    // สร้างหัวตารางอัตโนมัติเมื่อเป็นแผ่นงานว่าง
+    if (sheet.getLastRow() === 0) {
+      sheet.appendRow([
+        "วันที่เวลา", "เพศ", "อายุ", "วุฒิการศึกษา", "สถานะทางสังคม",
+        "วิชาที่ 1 เฉลี่ย (6 ข้อ)", "วิชาที่ 2 เฉลี่ย (8 ข้อ)", "คะแนนเฉลี่ยรวม 2 วิชา",
+        "จุดเด่นหรือสิ่งที่ประทับใจ", "สิ่งที่ควรปรับปรุงพัฒนา", "ข้อเสนอแนะวันถัดไป", "คะแนนรายข้อ (JSON)"
+      ]);
+    }
+    
+    sheet.appendRow([
+      new Date(),
+      data.gender,
+      data.age,
+      data.education,
+      data.role,
+      data.scores.avg1,
+      data.scores.avg2,
+      data.scores.overall,
+      data.suggestions.strengths,
+      data.suggestions.improvements,
+      data.suggestions.nextdays,
+      JSON.stringify(data.scores.raw)
+    ]);
+    
+    return ContentService.createTextOutput(JSON.stringify({ status: "success" }))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch(error) {
+    return ContentService.createTextOutput(JSON.stringify({ status: "error", message: error.toString() }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+                        </pre>
+                        <button type="button" onclick="copyGASCode()" class="absolute top-2 right-2 bg-slate-800 hover:bg-slate-700 text-emerald-400 text-[10px] px-2.5 py-1 rounded-lg border border-slate-700 flex items-center gap-1">
+                            <i data-lucide="copy" class="w-3 h-3"></i> คัดลอกโค้ด
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-emerald-50 rounded-xl p-3 text-xs text-emerald-900 space-y-1">
+                    <p class="font-semibold">ขั้นตอนใน Google Sheets:</p>
+                    <ol class="list-decimal pl-4 space-y-0.5 text-[11px] text-emerald-800 font-sarabun">
+                        <li>เปิด Google Sheet &rarr; เมนู Extensions &rarr; Apps Script</li>
+                        <li>วางโค้ดด้านบนแล้วกดเซฟ</li>
+                        <li>กด <strong>Deploy</strong> &rarr; New deployment &rarr; เลือก <strong>Web app</strong></li>
+                        <li>กำหนดสิทธิ์ Execute as: <strong>Me</strong> และ Who has access: <strong>Anyone</strong></li>
+                        <li>นำ Web app URL ที่ได้มาวางลงในช่องด้านบน</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="bg-gray-50 border-t border-gray-100 p-4 text-right">
+                <button type="button" onclick="closeWebhookModal()" class="px-5 py-2 rounded-xl bg-gray-200 text-gray-700 hover:bg-gray-300 font-semibold text-xs">
+                    ปิดหน้าต่าง
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 bg-gray-900 text-white px-4 py-3 rounded-xl shadow-xl text-xs sm:text-sm flex items-center space-x-2.5 transition-all transform translate-y-20 opacity-0 pointer-events-none">
+        <i data-lucide="info" class="w-4 h-4 text-yellow-300" id="toast-icon"></i>
+        <span id="toast-message">ข้อความ</span>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- LOGIC SCRIPT (2 วิชา รวม 14 ข้อย่อย) -->
+    <!-- ========================================================================= -->
+    <script>
+        // Total 14 evaluation criteria (วิชาที่ 1 = 6 ข้อ, วิชาที่ 2 = 8 ข้อ)
+        const questionsList = [
+            // วิชาที่ 1 (6 ข้อ)
+            's1_1', 's1_2', 's1_3', 's1_4', 's1_5', 's1_6',
+            // วิชาที่ 2 (8 ข้อ)
+            's2_1', 's2_2', 's2_3', 's2_4', 's2_5', 's2_6', 's2_7', 's2_8'
+        ];
+
+        let currentEvaluationData = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initQuestionRadioButtons();
+            initConditionalInputs();
+            loadSavedWebhook();
+            lucide.createIcons();
+            
+            document.getElementById('evaluationForm').addEventListener('change', () => {
+                updateProgress();
+                calculateScores();
+            });
+        });
+
+        // Initialize 1-5 rating radios
+        function initQuestionRadioButtons() {
+            questionsList.forEach(qName => {
+                const container = document.querySelector(`[data-question="${qName}"]`);
+                if (!container) return;
+
+                let html = '';
+                for (let score = 5; score >= 1; score--) {
+                    html += `
+                        <label class="relative flex-1 md:flex-initial cursor-pointer select-none">
+                            <input type="radio" name="${qName}" value="${score}" required class="rating-input sr-only">
+                            <div class="rating-label w-8 h-8 sm:w-9 sm:h-9 rounded-xl border border-gray-200 bg-white hover:bg-emerald-50 text-gray-700 flex items-center justify-center font-bold text-xs sm:text-sm transition-all duration-150">
+                                ${score}
+                            </div>
+                        </label>
+                    `;
+                }
+                container.innerHTML = html;
+            });
+        }
+
+        // Conditional inputs for "อื่นๆ (ระบุ)"
+        function initConditionalInputs() {
+            // Education Other
+            const eduRadios = document.querySelectorAll('input[name="education"]');
+            const eduOtherContainer = document.getElementById('edu_other_container');
+            const eduOtherInput = document.getElementById('edu_other_input');
+            eduRadios.forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    if (e.target.value === 'อื่นๆ') {
+                        eduOtherContainer.classList.remove('hidden');
+                        eduOtherInput.focus();
+                    } else {
+                        eduOtherContainer.classList.add('hidden');
+                    }
+                });
+            });
+
+            // Role Other
+            const roleRadios = document.querySelectorAll('input[name="role"]');
+            const roleOtherContainer = document.getElementById('role_other_container');
+            const roleOtherInput = document.getElementById('role_other_input');
+            roleRadios.forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    if (e.target.value === 'อื่นๆ') {
+                        roleOtherContainer.classList.remove('hidden');
+                        roleOtherInput.focus();
+                    } else {
+                        roleOtherContainer.classList.add('hidden');
+                    }
+                });
+            });
+        }
+
+        // Progress Calculation (4 general items + 14 questions = 18 total)
+        function updateProgress() {
+            const form = document.getElementById('evaluationForm');
+            const totalRequired = 4 + questionsList.length;
+            let filledCount = 0;
+
+            if (form.querySelector('input[name="gender"]:checked')) filledCount++;
+            if (form.querySelector('input[name="age"]:checked')) filledCount++;
+            if (form.querySelector('input[name="education"]:checked')) filledCount++;
+            if (form.querySelector('input[name="role"]:checked')) filledCount++;
+
+            questionsList.forEach(q => {
+                if (form.querySelector(`input[name="${q}"]:checked`)) {
+                    filledCount++;
+                }
+            });
+
+            const percent = Math.min(100, Math.round((filledCount / totalRequired) * 100));
+            document.getElementById('progress-bar-fill').style.width = percent + '%';
+            document.getElementById('progress-percent').textContent = percent + '%';
+        }
+
+        // Calculate Average Scores for 2 subjects
+        function calculateScores() {
+            const getAvg = (keys) => {
+                let sum = 0;
+                let count = 0;
+                keys.forEach(k => {
+                    const checked = document.querySelector(`input[name="${k}"]:checked`);
+                    if (checked) {
+                        sum += parseInt(checked.value, 10);
+                        count++;
+                    }
+                });
+                return count > 0 ? (sum / count) : 0;
+            };
+
+            const s1Keys = ['s1_1', 's1_2', 's1_3', 's1_4', 's1_5', 's1_6'];
+            const s2Keys = ['s2_1', 's2_2', 's2_3', 's2_4', 's2_5', 's2_6', 's2_7', 's2_8'];
+
+            const avg1 = getAvg(s1Keys);
+            const avg2 = getAvg(s2Keys);
+            const overall = getAvg(questionsList);
+
+            document.getElementById('subject1-avg').textContent = `เฉลี่ย ${avg1.toFixed(2)}`;
+            document.getElementById('subject2-avg').textContent = `เฉลี่ย ${avg2.toFixed(2)}`;
+            document.getElementById('live-avg-score').textContent = overall.toFixed(2);
+
+            return {
+                avg1: avg1.toFixed(2),
+                avg2: avg2.toFixed(2),
+                overall: overall.toFixed(2)
+            };
+        }
+
+        // Review Modal
+        function openReviewModal() {
+            const form = document.getElementById('evaluationForm');
+            
+            if (!form.checkValidity()) {
+                showToast('กรุณากรอกข้อมูลและเลือกคะแนนให้ครบทุกข้อ', 'error');
+                form.reportValidity();
+                return;
+            }
+
+            const gender = form.querySelector('input[name="gender"]:checked')?.value || '-';
+            const age = form.querySelector('input[name="age"]:checked')?.value || '-';
+            
+            let edu = form.querySelector('input[name="education"]:checked')?.value || '-';
+            if (edu === 'อื่นๆ') {
+                const otherVal = document.getElementById('edu_other_input').value.trim();
+                if (otherVal) edu += ` (${otherVal})`;
+            }
+
+            let role = form.querySelector('input[name="role"]:checked')?.value || '-';
+            if (role === 'อื่นๆ') {
+                const otherRoleVal = document.getElementById('role_other_input').value.trim();
+                if (otherRoleVal) role += ` (${otherRoleVal})`;
+            }
+
+            const scores = calculateScores();
+
+            const rawScores = {};
+            questionsList.forEach(q => {
+                rawScores[q] = form.querySelector(`input[name="${q}"]:checked`)?.value || '0';
+            });
+
+            const strengths = document.getElementById('suggestion_strengths').value.trim() || '-';
+            const improvements = document.getElementById('suggestion_improvements').value.trim() || '-';
+            const nextdays = document.getElementById('suggestion_nextdays').value.trim() || '-';
+
+            currentEvaluationData = {
+                timestamp: new Date().toISOString(),
+                formattedDate: new Date().toLocaleString('th-TH'),
+                gender,
+                age,
+                education: edu,
+                role,
+                scores: {
+                    ...scores,
+                    raw: rawScores
+                },
+                suggestions: {
+                    strengths,
+                    improvements,
+                    nextdays
+                }
+            };
+
+            const profileContainer = document.getElementById('review-profile-summary');
+            profileContainer.innerHTML = `
+                <div><span class="text-gray-500">เพศ:</span> <strong class="text-gray-800">${gender}</strong></div>
+                <div><span class="text-gray-500">อายุ:</span> <strong class="text-gray-800">${age}</strong></div>
+                <div><span class="text-gray-500">วุฒิการศึกษา:</span> <strong class="text-gray-800">${edu}</strong></div>
+                <div class="col-span-1 sm:col-span-2"><span class="text-gray-500">สถานะทางสังคม:</span> <strong class="text-gray-800">${role}</strong></div>
+            `;
+
+            document.getElementById('review-total-avg').textContent = `เฉลี่ยรวม 2 วิชา: ${scores.overall} / 5.00`;
+            document.getElementById('review-score-s1').textContent = `${scores.avg1} / 5.00`;
+            document.getElementById('review-score-s2').textContent = `${scores.avg2} / 5.00`;
+
+            document.getElementById('review-sug-strengths').textContent = strengths;
+            document.getElementById('review-sug-improvements').textContent = improvements;
+            document.getElementById('review-sug-nextdays').textContent = nextdays;
+
+            document.getElementById('reviewModal').classList.remove('hidden');
+        }
+
+        function closeReviewModal() {
+            document.getElementById('reviewModal').classList.add('hidden');
+        }
+
+// Submit Evaluation
+        async function submitEvaluation() {
+            closeReviewModal();
+            // กำหนด Web App URL ที่ได้มาเป็นค่าหลัก
+            const defaultWebhookUrl = 'https://script.google.com/macros/s/AKfycbw_bu8q7P9X-opF1fX_bCmwagete9Vep_AW1eE2e0O3EOoZViFHKqtEKcYVFv4ImAq4/exec';
+            const webhookUrl = localStorage.getItem('cdd_evaluation_webhook_url') || defaultWebhookUrl;
+
+            if (webhookUrl && webhookUrl.startsWith('http')) {
+                showToast('กำลังส่งข้อมูลไปยัง Google Sheets...', 'info');
+                try {
+                    await fetch(webhookUrl, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(currentEvaluationData)
+                    });
+                    showToast('ส่งข้อมูลเข้า Google Sheets สำเร็จ!', 'success');
+                } catch (err) {
+                    console.error('Webhook error:', err);
+                    showToast('ส่งผ่าน Webhook ไม่สำเร็จ สามารถดาวน์โหลด CSV แทนได้', 'warning');
+                }
+            }
+
+            document.getElementById('successModal').classList.remove('hidden');
+        }
+
+        function closeSuccessModal() {
+            document.getElementById('successModal').classList.add('hidden');
+            document.getElementById('evaluationForm').reset();
+            document.getElementById('edu_other_container').classList.add('hidden');
+            document.getElementById('role_other_container').classList.add('hidden');
+            updateProgress();
+            calculateScores();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Export to CSV with UTF-8 BOM
+        function exportToCSV() {
+            if (!currentEvaluationData) return;
+
+            const headers = [
+                "วันที่เวลา", "เพศ", "อายุ", "วุฒิการศึกษา", "สถานะทางสังคม",
+                "วิชา1_ข้อ1", "วิชา1_ข้อ2", "วิชา1_ข้อ3", "วิชา1_ข้อ4", "วิชา1_ข้อ5", "วิชา1_ข้อ6", "วิชาที่1_เฉลี่ย",
+                "วิชา2_ข้อ1", "วิชา2_ข้อ2", "วิชา2_ข้อ3", "วิชา2_ข้อ4", "วิชา2_ข้อ5", "วิชา2_ข้อ6", "วิชา2_ข้อ7", "วิชา2_ข้อ8", "วิชาที่2_เฉลี่ย",
+                "คะแนนเฉลี่ยรวม", "สิ่งที่ประทับใจหรือจุดเด่น", "สิ่งที่ควรปรับปรุงหรือพัฒนา", "ข้อเสนอแนะวันถัดไป"
+            ];
+
+            const raw = currentEvaluationData.scores.raw;
+            const row = [
+                `"${currentEvaluationData.formattedDate}"`,
+                `"${currentEvaluationData.gender}"`,
+                `"${currentEvaluationData.age}"`,
+                `"${currentEvaluationData.education.replace(/"/g, '""')}"`,
+                `"${currentEvaluationData.role.replace(/"/g, '""')}"`,
+                raw.s1_1, raw.s1_2, raw.s1_3, raw.s1_4, raw.s1_5, raw.s1_6, currentEvaluationData.scores.avg1,
+                raw.s2_1, raw.s2_2, raw.s2_3, raw.s2_4, raw.s2_5, raw.s2_6, raw.s2_7, raw.s2_8, currentEvaluationData.scores.avg2,
+                currentEvaluationData.scores.overall,
+                `"${currentEvaluationData.suggestions.strengths.replace(/"/g, '""')}"`,
+                `"${currentEvaluationData.suggestions.improvements.replace(/"/g, '""')}"`,
+                `"${currentEvaluationData.suggestions.nextdays.replace(/"/g, '""')}"`
+            ];
+
+            const csvContent = "\uFEFF" + headers.join(",") + "\n" + row.join(",");
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a");
+            const url = URL.createObjectURL(blob);
+            link.setAttribute("href", url);
+            link.setAttribute("download", `แบบประเมินรายวิชา_ตำบลเข้มแข็ง2วิชา_${Date.now()}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showToast('ดาวน์โหลดไฟล์ CSV เรียบร้อยแล้ว', 'success');
+        }
+
+        function copyDataJSON() {
+            if (!currentEvaluationData) return;
+            const text = JSON.stringify(currentEvaluationData, null, 2);
+            fallbackCopyText(text, 'คัดลอก JSON ผลการประเมินแล้ว');
+        }
+
+        function copyGASCode() {
+            const code = document.getElementById('gas-code-block').innerText;
+            fallbackCopyText(code, 'คัดลอกโค้ด Apps Script แล้ว');
+        }
+
+        function fallbackCopyText(text, successMsg) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                showToast(successMsg, 'success');
+            } catch (err) {
+                showToast('ไม่สามารถคัดลอกได้โดยอัตโนมัติ', 'error');
+            }
+            document.body.removeChild(textarea);
+        }
+
+        function saveWebhookUrl() {
+            const url = document.getElementById('webhook_url_input').value.trim();
+            if (url) {
+                localStorage.setItem('cdd_evaluation_webhook_url', url);
+                showToast('บันทึก Webhook URL เรียบร้อย', 'success');
+            } else {
+                localStorage.removeItem('cdd_evaluation_webhook_url');
+                showToast('ลบ Webhook URL เรียบร้อย', 'info');
+            }
+        }
+
+        function loadSavedWebhook() {
+            const defaultWebhookUrl = 'https://script.google.com/macros/s/AKfycbw_bu8q7P9X-opF1fX_bCmwagete9Vep_AW1eE2e0O3EOoZViFHKqtEKcYVFv4ImAq4/exec';
+            const url = localStorage.getItem('cdd_evaluation_webhook_url') || defaultWebhookUrl;
+            if (url) {
+                const el = document.getElementById('webhook_url_input');
+                if (el) el.value = url;
+            }
+        }
+
+        function openWebhookModal() {
+            document.getElementById('webhookModal').classList.remove('hidden');
+        }
+        function closeWebhookModal() {
+            document.getElementById('webhookModal').classList.add('hidden');
+        }
+
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-message');
+            toastMsg.textContent = message;
+
+            toast.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
+                toast.classList.remove('translate-y-0', 'opacity-100');
+            }, 3200);
+        }
+
+        function fillMockData() {
+            document.querySelector('input[name="gender"][value="หญิง"]').checked = true;
+            document.querySelector('input[name="age"][value="41-50 ปี"]').checked = true;
+            document.querySelector('input[name="education"][value="ปริญญาตรี"]').checked = true;
+            document.querySelector('input[name="role"][value="ผู้นำท้องที่/ผู้นำชุมชน (กำนัน/ผู้ใหญ่บ้าน/ผช.ผญบ./กช.)"]').checked = true;
+
+            questionsList.forEach(q => {
+                const score = Math.random() > 0.25 ? 5 : 4;
+                const targetRadio = document.querySelector(`input[name="${q}"][value="${score}"]`);
+                if (targetRadio) targetRadio.checked = true;
+            });
+
+            document.getElementById('suggestion_strengths').value = 'วิทยากรถ่ายทอดเนื้อหาได้ชัดเจนและเห็นภาพการประยุกต์ใช้เศรษฐกิจพอเพียงในพื้นที่จริง';
+            document.getElementById('suggestion_improvements').value = 'อยากให้เพิ่มเวลาในการฝึกเขียนแผนพัฒนาตำบลร่วมกันระหว่างกลุ่ม';
+            document.getElementById('suggestion_nextdays').value = 'ต้องการแลกเปลี่ยนแนวทางการขับเคลื่อนโครงการร่วมกับภาคีเครือข่ายเพิ่มเติม';
+
+            updateProgress();
+            calculateScores();
+            showToast('กรอกข้อมูลจำลองสำเร็จ', 'success');
+        }
+    </script>
+</body>
+</html>
